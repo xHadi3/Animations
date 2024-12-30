@@ -9,8 +9,10 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var animationAmount = 1.0
+    @State private var secondAnimationAmount = 0.0
     
     var body: some View {
+        Spacer()
         Button("Tap me"){
 //            animationAmount += 1
         }
@@ -24,11 +26,29 @@ struct ContentView: View {
                 .scaleEffect(animationAmount)
                 .opacity(2 - animationAmount)
                 .animation(
-                    .easeInOut(duration: 1)
+                    .easeIn(duration: 1)
                     .repeatForever(autoreverses: false)
                     ,value:  animationAmount)
             
         )
+        Spacer()
+        
+        Button("Tap Me"){
+            withAnimation(.spring(duration: 1, bounce: 0.5)){
+                secondAnimationAmount += 360
+            }
+        }
+        .padding(50)
+        .background(.red)
+        .foregroundColor(.white)
+        .clipShape(.circle)
+        .rotation3DEffect(.degrees(secondAnimationAmount),
+         axis: (x: 1.0, y: 1.0, z: 0.0)
+        )
+        
+        
+        Spacer()
+        
         .onAppear{
             animationAmount = 2
         }
