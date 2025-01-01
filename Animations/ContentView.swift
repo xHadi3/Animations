@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
     var letters = Array("Hello Swift")
     @State private var dragAmount = CGSize.zero
+    var letters = Array("Hello Swift")
     @State private var enabled = true
     @State private var animationAmount = 1.0
     @State private var secondAnimationAmount = 0.0
@@ -76,6 +77,14 @@ struct ContentView: View {
         .onAppear{
             animationAmount = 2
         }
+        .gesture(
+        DragGesture()
+            .onChanged {dragAmount = $0.translation}
+            .onEnded { _ in
+                dragAmount = .zero
+                enabled.toggle()
+            }
+        )
         
         
         
