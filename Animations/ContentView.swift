@@ -8,87 +8,23 @@
 import SwiftUI
 
 struct ContentView: View {
-    var letters = Array("Hello Swift")
-    @State private var dragAmount = CGSize.zero
-    var letters = Array("Hello Swift")
-    @State private var enabled = true
-    @State private var animationAmount = 1.0
-    @State private var secondAnimationAmount = 0.0
+   
+    @State private var isShowingRed = false
     
     var body: some View {
-        Spacer()
-        HStack(spacing: 0){
-            ForEach(0..<letters.count, id: \.self){ num in
-                Text(String(letters[num]))
-                    .padding(5)
-                    .background(enabled ? .red : .blue)
-                    .font(.title)
-                    .offset(dragAmount)
-                    .animation(.linear.delay(Double(num) / 20), value: dragAmount)
+        VStack{
+            Button("Tap me"){
+                isShowingRed.toggle()
             }
-        }
-        .gesture(
-        DragGesture()
-            .onChanged {dragAmount = $0.translation}
-            .onEnded { _ in
-                dragAmount = .zero
-                enabled.toggle()
+            
+            if isShowingRed{
+                Rectangle()
+                    .fill(.red)
+                    .frame(width: 200, height: 200)
+                    .transition(.asymmetric(insertion: .scale, removal: .opacity))
             }
-        )
-        Spacer()
-        HStack{
-            Button("Tap me"){ }
-                .padding(50)
-                .background(.red)
-                .foregroundColor(.white)
-                .clipShape(.circle)
-                .overlay(
-                    Circle()
-                        .stroke(.red)
-                        .scaleEffect(animationAmount)
-                        .opacity(2 - animationAmount)
-                        .animation(
-                            .easeIn(duration: 1)
-                            .repeatForever(autoreverses: false)
-                            ,value:  animationAmount
-                        )
-                    
-                    
-                )
-            
-            
-            Button("Tap Me"){
-                withAnimation(.spring(duration: 1, bounce: 0.5)){
-                    secondAnimationAmount += 360
-                }
-            }
-            .padding(50)
-            .background(.red)
-            .foregroundColor(.white)
-            .clipShape(.circle)
-            .rotation3DEffect(.degrees(secondAnimationAmount),
-                              axis: (x: 1.0, y: 1.0, z: 0.0)
-            )
-            
             
         }
-        Spacer()
-        
-        .onAppear{
-            animationAmount = 2
-        }
-        .gesture(
-        DragGesture()
-            .onChanged {dragAmount = $0.translation}
-            .onEnded { _ in
-                dragAmount = .zero
-                enabled.toggle()
-            }
-        )
-        
-        
-        
-        
     }
 }
 
